@@ -1,0 +1,14 @@
+server:
+  port: 9081 # Puerto para QA
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/db_productos_qa # BD de QA
+    username: postgres
+    password: 3264 # 
+    pool:
+      enabled: true
+  jpa:
+    show-sql: true
+logging:
+  level:
+    root: INFO

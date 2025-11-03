@@ -1,0 +1,16 @@
+server:
+  port: 8081
+spring:
+  # --- Configuración Reactiva (R2DBC) ---
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/db_productos_dev
+    username: postgres
+    password: 3264 
+    pool:
+      enabled: true
+  # JPA ya no se usa
+  jpa:
+    show-sql: true #  se configura diferente en R2DBC, pero lo dejamos
+logging:
+  level:
+    root: INFO

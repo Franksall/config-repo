@@ -1,0 +1,14 @@
+server:
+  port: 7082 # Puerto para Producción
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/db_pedidos_prd # BD de PRD
+    username: postgres
+    password: 3264
+    pool:
+      enabled: true
+  sql:
+    init:
+      mode: always 
+ms-productos:
+  url: http://localhost:7081 # Apunta al ms-productos de PRD
