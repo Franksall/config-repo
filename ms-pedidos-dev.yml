@@ -6,7 +6,7 @@ spring:
     url: r2dbc:postgresql://postgres-db:5432/sistema_pedidos_db
     #url: r2dbc:postgresql://localhost:5432/db_pedidos_dev
     username: postgres
-    password: 3264 
+    password: postgres 
     pool:
       enabled: true
   # R2DBC no tiene ddl-auto, pero se puede inicializar la BD con un script
