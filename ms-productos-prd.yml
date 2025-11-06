@@ -4,11 +4,11 @@ spring:
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/db_productos_prd # BD de PRD
     username: postgres
-    password: 3264 # 
+    password: 3264 # (En un mundo real, esta sería una contraseña súper segura)
     pool:
       enabled: true
   jpa:
-    show-sql: false # Nunca mostrar SQL producción
+    show-sql: false # Nunca mostrar SQL en producción
 logging:
   level:
     root: WARN # En producción, solo reportamos advertencias (WARN) o errores (ERROR)

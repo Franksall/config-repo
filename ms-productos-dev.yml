@@ -5,12 +5,17 @@ spring:
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/db_productos_dev
     username: postgres
-    password: 3264 
+    password: 3264 # Tu contraseña
     pool:
       enabled: true
-  # JPA ya no se usa
+  # --- JPA ya no se usa ---
   jpa:
     show-sql: true #  se configura diferente en R2DBC, pero lo dejamos
 logging:
   level:
     root: INFO
+eureka:
+  client:
+    serviceUrl:
+      
+      defaultZone: http://localhost:8099/eureka/
