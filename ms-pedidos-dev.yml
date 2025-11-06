@@ -19,14 +19,14 @@ ms-productos:
 eureka:
   client:
     serviceUrl:
-      
-      defaultZone: http://localhost:8099/eureka/
+      defaultZone: http://registry-service:8099/eureka/
+      #defaultZone: http://localhost:8099/eureka/
 
 resilience4j:
   circuitbreaker:
     instances:
       
-      
+
       productos-cb: 
         registerHealthIndicator: true
         slidingWindowType: COUNT_BASED   #  N° de llamadas
