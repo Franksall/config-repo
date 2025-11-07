@@ -1,0 +1,111 @@
+version: "3.9"
+
+networks:
+  pedidos-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+
+services:
+  # 🗄️ Base de Datos PostgreSQL
+  postgres-db:
+    image: postgres:14-alpine
+    container_name: postgres-db
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - pedidos-net
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres   
+      POSTGRES_DB: sistema_pedidos_db
+    volumes:
+      - ./database.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d sistema_pedidos_db"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  # ⚙️ Config Server
+  ms-config-server:
+    build: ./ms-config-server
+    container_name: ms-config-server
+    ports:
+      - "8888:8888"
+    networks:
+      - pedidos-net
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  # 🧭 Eureka Registry
+  registry-service:
+    build: ./registry-service
+    container_name: registry-service
+    ports:
+      - "8099:8099"
+    networks:
+      - pedidos-net
+    depends_on:
+      ms-config-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8099/actuator/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
+  # 📦 Microservicio de Productos
+  ms-productos:
+    build: ./ms-productos
+    container_name: ms-productos
+    ports:
+      - "8081:8081"
+    networks:
+      - pedidos-net
+    depends_on:
+      ms-config-server:
+        condition: service_healthy
+      registry-service:
+        condition: service_healthy
+
+  # 🧾 Microservicio de Pedidos
+  ms-pedidos:
+    build: ./ms-pedidos
+    container_name: ms-pedidos
+    ports:
+      - "8082:8082"
+    networks:
+      - pedidos-net
+    depends_on:
+      ms-config-server:
+        condition: service_healthy
+      registry-service:
+        condition: service_healthy
+
+  # 🌐 Gateway
+  gateway-service:
+    build: ./gateway-service
+    container_name: gateway-service
+    ports:
+      - "8080:8080"
+    networks:
+      - pedidos-net
+    depends_on:
+      ms-config-server:
+        condition: service_healthy
+      registry-service:
+        condition: service_healthy
+      ms-pedidos:
+        condition: service_started
+      ms-productos:
+        condition: service_started
