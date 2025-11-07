@@ -16,7 +16,7 @@ spring:
 
 # --- URL para comunicarse con ms-productos ---
 ms-productos:
-  url: http://localhost:8081
+  url: http://ms-productos:8081
 eureka:
   client:
     serviceUrl:
