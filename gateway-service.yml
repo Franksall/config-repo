@@ -12,37 +12,41 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true 
-      
+          enabled: true
       routes:
-        # Ruta para "ms-pedidos"
         - id: ms-pedidos-route
-          uri: lb://ms-pedidos  # busca en Eureka"
+          uri: lb://ms-pedidos
           predicates:
-            - Path=/api/pedidos/** 
-        
-        # Ruta para "ms-productos"
+            - Path=/api/pedidos/**
+          filters: 
+            - PreserveHostHeader 
         - id: ms-productos-route
           uri: lb://ms-productos
           predicates:
-            - Path=/api/productos/** 
+            - Path=/api/productos/**
+          filters: 
+            - PreserveHostHeader 
 
-        # AUTH SERVER (Endpoints de Token) 
         - id: ms-authorization-server-oauth
-          uri: lb://MS-AUTHORIZATION-SERVER #  Eureka
+          uri: lb://MS-AUTHORIZATION-SERVER
           predicates:
-            - Path=/oauth2/** # Redirige /oauth2/token, /oauth2/authorize, 
+            - Path=/oauth2/**
+          filters: 
+            - PreserveHostHeader 
 
-        #  AUTH SERVER (Configuración OIDC) 
         - id: ms-authorization-server-well-known
-          uri: lb://MS-AUTHORIZATION-SERVER #  Eureka
+          uri: lb://MS-AUTHORIZATION-SERVER
           predicates:
-            - Path=/.well-known/** # Redirige la validacion tokens
-            
+            - Path=/.well-known/**
+          filters: 
+            - PreserveHostHeader 
+
         - id: ms-authorization-server-login
           uri: lb://MS-AUTHORIZATION-SERVER
           predicates:
             - Path=/login
+          filters: 
+            - PreserveHostHeader 
 
   security:
     oauth2:
