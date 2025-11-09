@@ -38,6 +38,11 @@ spring:
           uri: lb://MS-AUTHORIZATION-SERVER #  Eureka
           predicates:
             - Path=/.well-known/** # Redirige la validacion tokens
+            
+        - id: ms-authorization-server-login
+          uri: lb://MS-AUTHORIZATION-SERVER
+          predicates:
+            - Path=/login
 
   security:
     oauth2:
