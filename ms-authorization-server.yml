@@ -1,0 +1,17 @@
+server:
+  port: 9000 # Puerto 9000
+
+
+eureka:
+  instance:
+    hostname: ms-authorization-server # Nombre de host en Docker
+  client:
+    service-url:
+      defaultZone: http://registry-service:8099/eureka
+
+
+spring:
+  security:
+    oauth2:
+      authorizationserver:
+        issuer: http://localhost:8080
