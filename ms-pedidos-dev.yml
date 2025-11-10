@@ -17,6 +17,19 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://gateway-service:8080
+      client:
+        registration:
+          # El nombre 'gateway-client-registration' es solo un ID interno
+          gateway-client-registration: 
+            provider: our-auth-server # Un nombre para el proveedor de abajo
+            client-id: gateway-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+        provider:
+          our-auth-server:
+            # El 'issuer-uri' le dice a Spring cómo encontrar todos los endpoints
+            issuer-uri: http://gateway-service:8080
 
 # --- URL para comunicarse con ms-productos ---
 ms-productos:
