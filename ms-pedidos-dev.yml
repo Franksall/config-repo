@@ -28,8 +28,9 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
         provider:
           our-auth-server:
-            # El 'issuer-uri' le dice a Spring cómo encontrar todos los endpoints
-            issuer-uri: http://gateway-service:8080
+            authorization-uri: http://gateway-service:8080/oauth2/authorize
+            token-uri: http://gateway-service:8080/oauth2/token
+            jwk-set-uri: http://gateway-service:8080/oauth2/jwks
 
 # --- URL para comunicarse con ms-productos ---
 ms-productos:
